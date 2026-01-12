@@ -115,13 +115,14 @@ This repository includes automated GitHub Actions workflows that:
 Each Dockerfile uses a multi-stage build:
 
 1. **Builder Stage**: Uses a full Python image to download and extract Acestream binaries
-2. **Runtime Stage**: Uses distroless Python image for minimal, secure runtime
+2. **Runtime Stage**: Uses distroless cc-debian12 image (includes C libraries) with copied Python runtime for minimal, secure runtime
 
 This approach ensures:
 - Build tools are not included in the final image
 - Minimal attack surface
 - Smaller image size
 - Better security posture
+- Python version compatibility (Acestream binaries require specific Python versions)
 
 ## Security
 

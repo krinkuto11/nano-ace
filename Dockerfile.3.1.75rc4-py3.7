@@ -30,9 +30,11 @@ FROM gcr.io/distroless/cc-debian12:latest
 # Copy Acestream installation from builder (includes bundled Python runtime)
 COPY --from=builder /acestream /acestream
 
-# Copy Python runtime and libraries from builder
+# Copy complete Python runtime and libraries from builder
 COPY --from=builder /usr/local/lib/python3.7 /usr/local/lib/python3.7
 COPY --from=builder /usr/local/bin/python3.7 /usr/local/bin/python3.7
+COPY --from=builder /usr/local/bin/python3 /usr/local/bin/python3
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libpython3.7m.so.1.0 /usr/lib/x86_64-linux-gnu/libpython3.7m.so.1.0
 
 # Set working directory
 WORKDIR /acestream
