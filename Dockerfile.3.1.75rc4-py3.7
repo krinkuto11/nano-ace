@@ -43,6 +43,11 @@ WORKDIR /acestream
 # Expose ports (6878: API HTTP, 8621: P2P BitTorrent)
 EXPOSE 6878 8621
 
+# Define default Acestream arguments as environment variable
+# Users can override the entire CMD to customize these arguments
+ENV ACESTREAM_ARGS="--client-console --bind-all"
+
 # Set entrypoint to start-engine script with arguments
-# Note: distroless requires vector form for CMD
+# Note: distroless requires vector form for CMD (no shell available)
+# To use custom arguments, override CMD when running: docker run ... image ["/acestream/start-engine", "arg1", "arg2"]
 CMD ["/acestream/start-engine", "--client-console", "--bind-all"]
