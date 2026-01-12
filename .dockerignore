@@ -4,16 +4,12 @@
 .github
 
 # Documentation
-README.md
-context/distroless_readme.md
-context/url_list.txt
-
-# CI/CD
-.github/workflows
-
-# Development files
 *.md
 !context/Dockerfile
+
+# Context reference files (not needed in build)
+context/distroless_readme.md
+context/url_list.txt
 
 # Logs
 *.log
