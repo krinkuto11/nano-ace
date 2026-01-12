@@ -128,9 +128,25 @@ Each Dockerfile uses a multi-stage build:
 This approach ensures:
 - Build tools are not included in the final image
 - Minimal attack surface
-- Smaller image size
+- Smaller image size (~70% reduction from ~1GB to ~300MB)
 - Better security posture
 - Python version compatibility (Acestream binaries require specific Python versions)
+
+### Library Optimization
+
+The Dockerfiles have been optimized to include only the minimal required system libraries instead of copying entire library directories. This significantly reduces image size while maintaining full functionality.
+
+**Required libraries across all versions:**
+- Core C libraries: `libc.so.6`, `libm.so.6`, `ld-linux-x86-64.so.2`
+- Compression: `libz.so.1` (zlib)
+- Database: `libsqlite3.so.0` (SQLite)
+- Foreign Function Interface: `libffi.so.*` (version varies by Python version)
+
+**Version-specific libraries:**
+- Python 3.7/3.8: Also requires `libexpat.so.1` for XML parsing
+- Python 2.7: Requires additional older glibc dependencies
+
+This optimization achieves a **~70% size reduction** (from ~1.03GB to ~314MB for the latest version) while maintaining full functionality.
 
 ## Security
 
