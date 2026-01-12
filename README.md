@@ -8,7 +8,7 @@ We provide 4 different versions of Acestream with distroless base images:
 
 | Version | Python | Dockerfile | Container Tag |
 |---------|--------|------------|---------------|
-| 3.2.11 | 3.10 | `Dockerfile.3.2.11-py3.10` | `ghcr.io/krinkuto11/nano-ace:3.2.11-py3.10` |
+| 3.2.11 (latest) | 3.10 | `Dockerfile.3.2.11-py3.10` | `ghcr.io/krinkuto11/nano-ace:latest` or `:3.2.11-py3.10` |
 | 3.2.11 | 3.8 | `Dockerfile.3.2.11-py3.8` | `ghcr.io/krinkuto11/nano-ace:3.2.11-py3.8` |
 | 3.1.75rc4 | 3.7 | `Dockerfile.3.1.75rc4-py3.7` | `ghcr.io/krinkuto11/nano-ace:3.1.75rc4-py3.7` |
 | 3.1.74 | 3.7 | `Dockerfile.3.1.74` | `ghcr.io/krinkuto11/nano-ace:3.1.74` |
@@ -55,6 +55,14 @@ done
 ### Basic usage
 
 ```bash
+# Use the latest version
+docker run -d \
+  --name acestream \
+  -p 6878:6878 \
+  -p 8621:8621 \
+  ghcr.io/krinkuto11/nano-ace:latest
+
+# Or use a specific version
 docker run -d \
   --name acestream \
   -p 6878:6878 \

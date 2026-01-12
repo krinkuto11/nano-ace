@@ -37,6 +37,7 @@ jobs:
             tags: |
               type=raw,value=3.2.11-py3.10
               type=raw,value=latest-py3.10
+              type=raw,value=latest
           - dockerfile: Dockerfile.3.2.11-py3.8
             version: 3.2.11-py3.8
             tags: |
