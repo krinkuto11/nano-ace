@@ -13,7 +13,7 @@ RUN mkdir -p /acestream
 
 # Download and extract Acestream
 RUN wget -O /tmp/acestream.tar.gz https://download.acestream.media/linux/acestream_3.2.11_ubuntu_18.04_x86_64_py3.8.tar.gz && \
-    tar -xzf /tmp/acestream.tar.gz -C /acestream --strip-components=1 && \
+    tar -xzf /tmp/acestream.tar.gz -C /acestream && \
     rm /tmp/acestream.tar.gz
 
 # Install Python dependencies if requirements.txt exists
@@ -37,17 +37,19 @@ COPY --from=builder /usr/local/bin/python3 /usr/local/bin/python3
 # Copy Python shared library from builder
 COPY --from=builder /usr/local/lib/libpython3.8.so.1.0 /usr/local/lib/libpython3.8.so.1.0
 
+# Copy system libraries needed by Python modules and acestream
+COPY --from=builder /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
+COPY --from=builder /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu
+
 # Set working directory
 WORKDIR /acestream
 
 # Expose ports (6878: API HTTP, 8621: P2P BitTorrent)
 EXPOSE 6878 8621
 
-# Define default Acestream arguments as environment variable
-# Users can override the entire CMD to customize these arguments
-ENV ACESTREAM_ARGS="--client-console --bind-all"
+# Set library path to include acestream lib directory and system libraries
+ENV LD_LIBRARY_PATH=/acestream/lib:/usr/local/lib
 
-# Set entrypoint to start-engine script with arguments
-# Note: distroless requires vector form for CMD (no shell available)
-# To use custom arguments, override CMD when running: docker run ... image ["/acestream/start-engine", "arg1", "arg2"]
-CMD ["/acestream/start-engine", "--client-console", "--bind-all"]
+# Run acestream engine directly with default arguments
+# Users can override CMD when running: docker run ... image ["/acestream/acestreamengine", "arg1", "arg2"]
+CMD ["/acestream/acestreamengine", "--client-console", "--bind-all"]
