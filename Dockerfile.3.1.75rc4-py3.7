@@ -1,0 +1,46 @@
+# Multi-stage build for Acestream 3.1.75rc4 (Ubuntu 18.04, Python 3.7) with distroless
+# Stage 1: Download and extract Acestream
+FROM python:3.7-bookworm as builder
+
+# Install dependencies needed for downloading and extracting
+RUN apt-get update && apt-get install -y \
+    wget \
+    tar \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create directory for Acestream
+RUN mkdir -p /acestream
+
+# Download and extract Acestream
+RUN wget -O /tmp/acestream.tar.gz https://download.acestream.media/linux/acestream_3.1.75rc4_ubuntu_18.04_x86_64_py3.7.tar.gz && \
+    tar -xzf /tmp/acestream.tar.gz -C /acestream && \
+    rm /tmp/acestream.tar.gz
+
+# Install Python dependencies if requirements.txt exists
+WORKDIR /acestream
+RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+
+# Create cache directory
+RUN mkdir -p /acestream/.ACEStream
+
+# Stage 2: Create minimal distroless runtime image
+FROM gcr.io/distroless/python3-debian12:latest
+
+# Copy Acestream installation from builder
+COPY --from=builder /acestream /acestream
+
+# Copy Python site-packages if any additional packages were installed
+COPY --from=builder /usr/local/lib/python3.7/site-packages /usr/local/lib/python3.7/site-packages
+
+# Set working directory
+WORKDIR /acestream
+
+# Expose ports (6878: API HTTP, 8621: P2P BitTorrent)
+EXPOSE 6878 8621
+
+# Set environment variable for Acestream arguments
+ENV ACESTREAM_ARGS="--client-console --bind-all"
+
+# Set entrypoint to start-engine script
+# Note: distroless requires vector form for CMD
+CMD ["/acestream/start-engine", "--client-console", "--bind-all"]

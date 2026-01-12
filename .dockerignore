@@ -1,0 +1,24 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+context/distroless_readme.md
+context/url_list.txt
+
+# CI/CD
+.github/workflows
+
+# Development files
+*.md
+!context/Dockerfile
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
