@@ -1,6 +1,6 @@
 # Nano-Ace: Distroless Acestream Docker Images
 
-This repository provides distroless Docker images for Acestream Engine, offering minimal, secure container images for running Acestream.
+This repository provides distroless Docker images for Acestream Engine, offering minimal (around 300MB), secure container images for running Acestream.
 
 ## Available Versions
 
