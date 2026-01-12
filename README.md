@@ -72,8 +72,6 @@ docker run -d \
 
 ### With custom arguments
 
-The `ACESTREAM_ARGS` environment variable is set to `--client-console --bind-all` by default. 
-
 To customize the arguments, you can override the entire CMD:
 
 ```bash
@@ -82,10 +80,8 @@ docker run -d \
   -p 6878:6878 \
   -p 8621:8621 \
   ghcr.io/krinkuto11/nano-ace:3.2.11-py3.10 \
-  /acestream/start-engine --client-console --bind-all --log-debug 1
+  /acestream/acestreamengine --client-console --bind-all --log-debug 1
 ```
-
-Or use an alternative approach with environment variables in your own wrapper script.
 
 ### With persistent cache
 
