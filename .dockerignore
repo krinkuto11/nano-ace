@@ -5,7 +5,6 @@
 
 # Documentation
 *.md
-!context/Dockerfile
 
 # Context reference files (not needed in build)
 context/distroless_readme.md
