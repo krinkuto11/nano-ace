@@ -34,8 +34,8 @@ COPY --from=builder /acestream /acestream
 COPY --from=builder /usr/local/lib/python3.10 /usr/local/lib/python3.10
 COPY --from=builder /usr/local/bin/python3.10 /usr/local/bin/python3.10
 COPY --from=builder /usr/local/bin/python3 /usr/local/bin/python3
-# Note: Acestream binaries are x86_64 only, matching our amd64 build target
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0 /usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0
+# Copy Python shared library from builder
+COPY --from=builder /usr/local/lib/libpython3.10.so.1.0 /usr/local/lib/libpython3.10.so.1.0
 
 # Set working directory
 WORKDIR /acestream
