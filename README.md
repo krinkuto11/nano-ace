@@ -11,7 +11,7 @@ We provide 4 different versions of Acestream with distroless base images:
 | 3.2.11 (latest) | 3.10 | `Dockerfile.3.2.11-py3.10` | `ghcr.io/krinkuto11/nano-ace:latest` or `:3.2.11-py3.10` |
 | 3.2.11 | 3.8 | `Dockerfile.3.2.11-py3.8` | `ghcr.io/krinkuto11/nano-ace:3.2.11-py3.8` |
 | 3.1.75rc4 | 3.7 | `Dockerfile.3.1.75rc4-py3.7` | `ghcr.io/krinkuto11/nano-ace:3.1.75rc4-py3.7` |
-| 3.1.74 | 3.7 | `Dockerfile.3.1.74` | `ghcr.io/krinkuto11/nano-ace:3.1.74` |
+| 3.1.74 | 2.7 | `Dockerfile.3.1.74` | `ghcr.io/krinkuto11/nano-ace:3.1.74` |
 
 ## Why Distroless?
 
