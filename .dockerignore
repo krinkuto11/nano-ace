@@ -1,0 +1,19 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Documentation
+*.md
+
+# Context reference files (not needed in build)
+context/distroless_readme.md
+context/url_list.txt
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp

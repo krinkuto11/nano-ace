@@ -1,0 +1,53 @@
+# Multi-stage build for Acestream 3.1.74 (Ubuntu 18.04) with distroless
+# Stage 1: Download and extract Acestream
+FROM python:3.7-bookworm AS builder
+
+# Install dependencies needed for downloading and extracting
+RUN apt-get update && apt-get install -y \
+    wget \
+    tar \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create directory for Acestream
+RUN mkdir -p /acestream
+
+# Download and extract Acestream
+RUN wget -O /tmp/acestream.tar.gz https://download.acestream.media/linux/acestream_3.1.74_ubuntu_18.04_x86_64.tar.gz && \
+    tar -xzf /tmp/acestream.tar.gz -C /acestream && \
+    rm /tmp/acestream.tar.gz
+
+# Install Python dependencies if requirements.txt exists
+WORKDIR /acestream
+RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+
+# Create cache directory
+RUN mkdir -p /acestream/.ACEStream
+
+# Stage 2: Create minimal distroless runtime image
+# Using cc-debian12 as it includes necessary C libraries for Python runtime
+FROM gcr.io/distroless/cc-debian12:latest
+
+# Copy Acestream installation from builder (includes bundled Python runtime)
+COPY --from=builder /acestream /acestream
+
+# Copy complete Python runtime and libraries from builder
+COPY --from=builder /usr/local/lib/python3.7 /usr/local/lib/python3.7
+COPY --from=builder /usr/local/bin/python3.7 /usr/local/bin/python3.7
+COPY --from=builder /usr/local/bin/python3 /usr/local/bin/python3
+# Note: Acestream binaries are x86_64 only, matching our amd64 build target
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libpython3.7m.so.1.0 /usr/lib/x86_64-linux-gnu/libpython3.7m.so.1.0
+
+# Set working directory
+WORKDIR /acestream
+
+# Expose ports (6878: API HTTP, 8621: P2P BitTorrent)
+EXPOSE 6878 8621
+
+# Define default Acestream arguments as environment variable
+# Users can override the entire CMD to customize these arguments
+ENV ACESTREAM_ARGS="--client-console --bind-all"
+
+# Set entrypoint to start-engine script with arguments
+# Note: distroless requires vector form for CMD (no shell available)
+# To use custom arguments, override CMD when running: docker run ... image ["/acestream/start-engine", "arg1", "arg2"]
+CMD ["/acestream/start-engine", "--client-console", "--bind-all"]
