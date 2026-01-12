@@ -1,0 +1,4 @@
+https://download.acestream.media/linux/acestream_3.2.11_ubuntu_22.04_x86_64_py3.10.tar.gz
+https://download.acestream.media/linux/acestream_3.2.11_ubuntu_18.04_x86_64_py3.8.tar.gz
+https://download.acestream.media/linux/acestream_3.1.75rc4_ubuntu_18.04_x86_64_py3.7.tar.gz
+https://download.acestream.media/linux/acestream_3.1.74_ubuntu_18.04_x86_64.tar.gz
