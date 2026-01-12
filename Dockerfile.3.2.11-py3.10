@@ -1,6 +1,6 @@
 # Multi-stage build for Acestream 3.2.11 (Ubuntu 22.04, Python 3.10) with distroless
 # Stage 1: Download and extract Acestream
-FROM python:3.10-bookworm as builder
+FROM python:3.10-bookworm AS builder
 
 # Install dependencies needed for downloading and extracting
 RUN apt-get update && apt-get install -y \
