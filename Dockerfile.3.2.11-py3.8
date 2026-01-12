@@ -24,13 +24,15 @@ RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.
 RUN mkdir -p /acestream/.ACEStream
 
 # Stage 2: Create minimal distroless runtime image
-FROM gcr.io/distroless/python3-debian12:latest
+# Using cc-debian12 as it includes necessary C libraries for Python runtime
+FROM gcr.io/distroless/cc-debian12:latest
 
-# Copy Acestream installation from builder
+# Copy Acestream installation from builder (includes bundled Python runtime)
 COPY --from=builder /acestream /acestream
 
-# Copy Python site-packages if any additional packages were installed
-COPY --from=builder /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
+# Copy Python runtime and libraries from builder
+COPY --from=builder /usr/local/lib/python3.8 /usr/local/lib/python3.8
+COPY --from=builder /usr/local/bin/python3.8 /usr/local/bin/python3.8
 
 # Set working directory
 WORKDIR /acestream
@@ -38,9 +40,6 @@ WORKDIR /acestream
 # Expose ports (6878: API HTTP, 8621: P2P BitTorrent)
 EXPOSE 6878 8621
 
-# Set environment variable for Acestream arguments
-ENV ACESTREAM_ARGS="--client-console --bind-all"
-
-# Set entrypoint to start-engine script
+# Set entrypoint to start-engine script with arguments
 # Note: distroless requires vector form for CMD
 CMD ["/acestream/start-engine", "--client-console", "--bind-all"]

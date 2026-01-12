@@ -76,6 +76,7 @@ jobs:
             org.opencontainers.image.version=${{ matrix.version }}
 
       - name: Build and push Docker image
+        id: build-push
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -88,4 +89,4 @@ jobs:
           platforms: linux/amd64
 
       - name: Image digest
-        run: echo "Image built with digest ${{ steps.build.outputs.digest }}"
+        run: echo "Image built with digest ${{ steps.build-push.outputs.digest }}"
